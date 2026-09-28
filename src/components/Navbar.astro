@@ -1,0 +1,273 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
+import { mainNav, moreNav, site } from '@/data/site';
+---
+
+<header class="nav-wrap">
+  <nav class="nav container" aria-label="Main">
+    <div class="nav-inner">
+      <a href="/" class="brand" aria-label={`${site.name}, home`}>{site.nickname}</a>
+
+      <ul class="links">
+        {
+          mainNav.map((item) => (
+            <li>
+              <a href={item.href}>
+                <Icon name={item.icon} />
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <details class="more">
+            <summary>
+              More <Icon name="lucide:chevron-down" class="chev" />
+            </summary>
+            <ul class="dropdown">
+              {
+                moreNav.map((item) => (
+                  <li>
+                    <a href={item.href}>
+                      <Icon name={item.icon} />
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </details>
+        </li>
+      </ul>
+
+      <div class="actions">
+        <ThemeToggle />
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="sr-only">Menu</span>
+          <Icon name="lucide:menu" size={22} class="open" />
+          <Icon name="lucide:x" size={22} class="close" />
+        </button>
+      </div>
+    </div>
+
+    <ul id="mobile-menu" class="mobile" hidden>
+      {
+        [...mainNav, ...moreNav].map((item) => (
+          <li>
+            <a href={item.href}>
+              <Icon name={item.icon} />
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const more = document.querySelector<HTMLDetailsElement>('.nav .more');
+  const btn = document.querySelector<HTMLButtonElement>('.nav .menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    if (more?.open && !more.contains(target)) more.open = false;
+    if (target instanceof Element && target.closest('.dropdown a')) more?.removeAttribute('open');
+  });
+
+  const setMenu = (open: boolean) => {
+    if (!btn || !menu) return;
+    btn.setAttribute('aria-expanded', String(open));
+    menu.hidden = !open;
+  };
+  btn?.addEventListener('click', () => setMenu(Boolean(menu?.hidden)));
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) setMenu(false);
+  });
+</script>
+
+<style>
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding-top: 14px;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 62px;
+    padding: 0 12px 0 22px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .brand {
+    font-family: var(--font-script);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--text);
+    padding-top: 2px;
+  }
+
+  .brand:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .links {
+    display: none;
+    list-style: none;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+  }
+
+  .links a,
+  .more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 10px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  .links a:hover,
+  .more summary:hover {
+    text-decoration: none;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .links > li > a :global(.icon) {
+    color: var(--accent);
+  }
+
+  .more {
+    position: relative;
+  }
+
+  .more summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .more :global(.chev) {
+    transition: transform 0.15s;
+  }
+
+  .more[open] :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    min-width: 220px;
+    list-style: none;
+    padding: 8px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .dropdown a {
+    display: flex;
+    width: 100%;
+  }
+
+  .dropdown a :global(.icon) {
+    color: var(--muted);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .menu-btn {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .menu-btn :global(.close),
+  .menu-btn[aria-expanded='true'] :global(.open) {
+    display: none;
+  }
+
+  .menu-btn[aria-expanded='true'] :global(.close) {
+    display: block;
+  }
+
+  .mobile {
+    list-style: none;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+
+  .mobile a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+
+  .mobile a :global(.icon) {
+    color: var(--accent);
+  }
+
+  .mobile a:hover {
+    text-decoration: none;
+    background: var(--surface-2);
+  }
+
+  @media (min-width: 1040px) {
+    .links {
+      display: flex;
+    }
+    .actions {
+      margin-left: 4px;
+    }
+    .menu-btn,
+    .mobile {
+      display: none !important;
+    }
+  }
+</style>

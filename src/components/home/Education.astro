@@ -1,0 +1,95 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Logo from '@/components/ui/Logo.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { education } from '@/data/education';
+---
+
+<section id="education" class="section container">
+  <SectionHeading title="Education" />
+  <div class="card list">
+    {
+      education.map((e) => (
+        <article class="item">
+          <Logo logo={e.logo} alt={`${e.school} logo`} size={64} />
+          <div class="body">
+            <span class="level">{e.level}</span>
+            <h3>{e.href ? <a href={e.href} target="_blank" rel="noopener">{e.school}</a> : e.school}</h3>
+            <p class="degree">{e.degree}</p>
+            <p class="result">{e.result}</p>
+            <div class="meta">
+              <span>
+                <Icon name="lucide:calendar" /> {e.period}
+              </span>
+              <span>
+                <Icon name="lucide:map-pin" /> {e.location}
+              </span>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .list {
+    margin-top: 32px;
+    overflow: hidden;
+  }
+
+  .item {
+    display: flex;
+    gap: 22px;
+    padding: 28px clamp(20px, 4vw, 40px);
+  }
+
+  .item + .item {
+    border-top: 1px solid var(--border);
+  }
+
+  .level {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  h3 {
+    margin-top: 6px;
+    font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+    letter-spacing: -0.03em;
+  }
+
+  h3 a {
+    color: var(--text);
+  }
+
+  .degree {
+    margin-top: 6px;
+    font-weight: 500;
+    color: var(--text-soft);
+  }
+
+  .result {
+    margin-top: 2px;
+    font-size: 0.92rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .meta {
+    margin-top: 10px;
+  }
+
+  @media (max-width: 520px) {
+    .item {
+      flex-direction: column;
+      gap: 14px;
+    }
+  }
+</style>

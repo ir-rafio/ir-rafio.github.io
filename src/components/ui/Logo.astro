@@ -1,0 +1,20 @@
+---
+// Square logo tile. Shows the logo when one exists, otherwise the fallback icon.
+import { Image } from 'astro:assets';
+import Icon from '@/components/ui/Icon.astro';
+import { logos, type LogoId } from '@/data/logos';
+
+interface Props {
+  logo?: LogoId;
+  icon?: string;
+  alt?: string;
+  size?: number;
+}
+
+const { logo, icon = 'lucide:building-2', alt = '', size = 56 } = Astro.props;
+const src = logo ? logos[logo] : undefined;
+---
+
+<span class:list={['logo-box', { 'icon-only': !src }]} style={`width:${size}px;height:${size}px`}>
+  {src ? <Image src={src} alt={alt} width={size * 2} /> : <Icon name={icon} size={Math.round(size * 0.42)} label={alt || undefined} />}
+</span>

@@ -1,0 +1,155 @@
+---
+import { render } from 'astro:content';
+import 'katex/dist/katex.min.css';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Tag from '@/components/blog/Tag.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { excerpt, formatDate, getBlogs, type Blog } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const blogs = await getBlogs();
+  return blogs.map((blog, i) => ({
+    params: { slug: blog.id },
+    props: { blog, newer: blogs[i - 1], older: blogs[i + 1] },
+  }));
+}
+
+interface Props {
+  blog: Blog;
+  newer?: Blog;
+  older?: Blog;
+}
+
+const { blog, newer, older } = Astro.props;
+const { Content } = await render(blog);
+const { title, date, tags } = blog.data;
+---
+
+<BaseLayout title={title} description={excerpt(blog, 160)}>
+  <article class="container post">
+    <a class="back" href="/blog/"><Icon name="lucide:arrow-left" /> All blogs</a>
+    <header>
+      <h1>{title}</h1>
+      <div class="meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        <span class="tags">
+          {tags.map((t) => <Tag tag={t} />)}
+        </span>
+      </div>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <nav class="pager" aria-label="More blogs">
+      {
+        older ? (
+          <a href={`/blog/${older.id}/`}>
+            <span class="eyebrow">Older</span>
+            {older.data.title}
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newer && (
+          <a href={`/blog/${newer.id}/`} class="next">
+            <span class="eyebrow">Newer</span>
+            {newer.data.title}
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: 800px;
+    padding-top: clamp(36px, 6vw, 64px);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  header {
+    margin: 22px 0 36px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: -0.04em;
+  }
+
+  .meta {
+    margin-top: 14px;
+    gap: 10px 14px;
+  }
+
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .prose :global(.katex-display) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 0;
+  }
+
+  .prose :global(details) {
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+
+  .prose :global(summary) {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .prose :global(details[open] summary) {
+    margin-bottom: 14px;
+  }
+
+  .prose :global(hr) {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin-block: 2em;
+  }
+
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .pager a {
+    display: grid;
+    gap: 4px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .pager a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .pager .next {
+    text-align: right;
+  }
+</style>

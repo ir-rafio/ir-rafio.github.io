@@ -1,0 +1,168 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Tag from '@/components/blog/Tag.astro';
+import { excerpt, formatDate, getBlogs } from '@/lib/blog';
+import { highlightedBlog } from '@/data/site';
+
+const blogs = await getBlogs();
+const featured = blogs.find((b) => b.id === highlightedBlog) ?? blogs[0];
+const others = blogs.filter((b) => b !== featured).slice(0, 4);
+---
+
+<section id="blogs" class="section container">
+  <SectionHeading title="Personal Blogs" href="/blog/" />
+
+
+  <div class="layout">
+    {
+      featured && (
+        <a class="card feature" href={`/blog/${featured.id}/`}>
+          <span class="eyebrow">Highlighted</span>
+          <h3>{featured.data.title}</h3>
+          <p>{excerpt(featured, 260)}</p>
+          <span class="read">
+            Read the blog <Icon name="lucide:arrow-up-right" />
+          </span>
+        </a>
+      )
+    }
+    <div class="card list">
+      <div class="list-head">
+        <span class="eyebrow">More blogs</span>
+        <span class="eyebrow">{blogs.length} in total</span>
+      </div>
+      {
+        others.map((b) => (
+          <a class="row" href={`/blog/${b.id}/`}>
+            <div>
+              <h4>{b.data.title}</h4>
+              <div class="row-meta">
+                <time datetime={b.data.date.toISOString()}>{formatDate(b.data.date, 'short')}</time>
+                {b.data.tags.map((t) => (
+                  <Tag tag={t} />
+                ))}
+              </div>
+            </div>
+            <Icon name="lucide:arrow-up-right" class="go" />
+          </a>
+        ))
+      }
+      <a class="row all" href="/blog/">
+        <div>
+          <h4>All blogs</h4>
+        </div>
+        <Icon name="lucide:arrow-right" class="go" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 20px;
+    margin-top: 28px;
+  }
+
+  .feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 320px;
+    padding: clamp(24px, 4vw, 36px);
+    color: inherit;
+    background:
+      radial-gradient(120% 90% at 100% 0%, var(--accent-soft), transparent 60%),
+      radial-gradient(90% 70% at 0% 100%, var(--pink-soft), transparent 60%),
+      var(--surface);
+  }
+
+  .feature:hover {
+    text-decoration: none;
+  }
+
+  .feature h3 {
+    margin-top: 10px;
+    font-size: clamp(2rem, 4.4vw, 3rem);
+    letter-spacing: -0.05em;
+  }
+
+  .feature p {
+    margin-top: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .read {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .list {
+    padding: 8px 24px;
+  }
+
+  .list-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
+    color: inherit;
+  }
+
+  .row:hover {
+    text-decoration: none;
+  }
+
+  .row:hover h4 {
+    color: var(--accent);
+  }
+
+  h4 {
+    font-size: 1.12rem;
+    letter-spacing: -0.02em;
+    transition: color 0.15s;
+  }
+
+  .row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .all p {
+    margin-top: 2px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .row :global(.go) {
+    color: var(--muted);
+  }
+
+  @media (min-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+  }
+</style>

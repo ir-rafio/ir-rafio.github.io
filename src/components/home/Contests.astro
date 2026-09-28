@@ -1,0 +1,242 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Logo from '@/components/ui/Logo.astro';
+import { authoredCount, codeforces, homeJudged, judged, participations } from '@/data/contests';
+
+const played = participations.filter((p) => p.featured);
+const set = homeJudged.map((name) => judged.find((j) => j.name === name)!).filter(Boolean);
+const setterCount = judged.length;
+---
+
+<section id="contests" class="section container">
+  <SectionHeading title="Programming Contests" href="/contests/" />
+
+  <div class="cols">
+    <div class="col">
+      <h3 class="col-title"><Icon name="lucide:swords" /> As a contestant</h3>
+
+      <a class="card cf" href={codeforces.url} target="_blank" rel="noopener">
+        <Logo logo="codeforces" alt="Codeforces logo" size={52} />
+        <div class="cf-body">
+          <span class="eyebrow">Codeforces · @{codeforces.handle}</span>
+          <strong class="cf-rank">{codeforces.rank}</strong>
+          <div class="cf-stats">
+            <span><b>{codeforces.maxRating}</b> max rating</span>
+            <span><b>{codeforces.solved}</b> problems solved</span>
+          </div>
+        </div>
+        <Icon name="lucide:arrow-up-right" class="go" />
+      </a>
+
+      <ul class="list">
+        {
+          played.map((p) => (
+            <li class="card row">
+              <div>
+                <h4>{p.name}</h4>
+                {p.highlights.length > 0 && <p>{p.highlights.join(' · ')}</p>}
+              </div>
+              <div class="rank">
+                <strong>{p.rank}</strong>
+                {p.field && <span>of {p.field}</span>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="col">
+      <h3 class="col-title"><Icon name="lucide:gavel" /> As a setter, judge and coordinator</h3>
+      <p class="fav">My favorite problems are pure ad-hoc ones that reward out-of-the-box thinking, followed by math problems.</p>
+      <div class="card stat-row">
+        <div>
+          <strong>{setterCount}</strong>
+          <span>contests set, tested or coordinated</span>
+        </div>
+        <div>
+          <strong>{authoredCount}</strong>
+          <span>original problems written</span>
+        </div>
+      </div>
+      <ul class="list">
+        {
+          set.map((j) => (
+            <li class="card row">
+              <div>
+                <h4>{j.name}</h4>
+                <p>{j.date}{j.authored.length > 0 && ` · ${j.authored.length} ${j.authored.length > 1 ? 'problems' : 'problem'} written`}</p>
+              </div>
+              <div class="roles">
+                {j.roles.map((r) => (
+                  <span class="chip accent">{r}</span>
+                ))}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .cols {
+    display: grid;
+    gap: 36px;
+    margin-top: 32px;
+  }
+
+  .col-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .col-title :global(.icon) {
+    color: var(--accent);
+  }
+
+  .fav {
+    margin: -6px 0 14px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .cf {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    color: inherit;
+  }
+
+  .cf:hover {
+    text-decoration: none;
+    border-color: var(--accent-bright);
+  }
+
+  .cf-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cf-rank {
+    display: block;
+    margin-top: 2px;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    color: #1f8acb;
+  }
+
+  :global([data-theme='dark']) .cf-rank {
+    color: #5fb6ea;
+  }
+
+  .cf-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-top: 4px;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  .cf-stats b {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .cf :global(.go) {
+    color: var(--muted);
+  }
+
+  .list {
+    display: grid;
+    gap: 12px;
+    margin-top: 12px;
+    list-style: none;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  h4 {
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .row p {
+    margin-top: 3px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .rank {
+    display: grid;
+    justify-items: end;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .rank strong {
+    font-size: 1.15rem;
+    color: var(--accent);
+  }
+
+  .rank span {
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+
+  .roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 18px 22px;
+  }
+
+  .stat-row div {
+    display: grid;
+  }
+
+  .stat-row div + div {
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
+  }
+
+  .stat-row strong {
+    font-size: 1.7rem;
+    letter-spacing: -0.03em;
+  }
+
+  .stat-row span {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+
+  @media (min-width: 900px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+  }
+</style>

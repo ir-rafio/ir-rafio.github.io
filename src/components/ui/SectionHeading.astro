@@ -1,0 +1,83 @@
+---
+// Big section title. When `href` is set the title links to a detail page
+// and shows an arrow badge so readers know it leads somewhere.
+import Icon from '@/components/ui/Icon.astro';
+
+interface Props {
+  title: string;
+  href?: string;
+  intro?: string;
+  as?: 'h1' | 'h2';
+}
+
+const { title, href, intro, as: Tag = 'h2' } = Astro.props;
+---
+
+<div class="heading">
+  <Tag class="title">
+    {
+      href ? (
+        <a href={href} class="linked">
+          {title}
+          <span class="badge">
+            <span class="badge-text">Details</span>
+            <Icon name="lucide:arrow-up-right" />
+          </span>
+        </a>
+      ) : (
+        title
+      )
+    }
+  </Tag>
+  {intro && <p class="section-intro">{intro}</p>}
+  <slot />
+</div>
+
+<style>
+  .title {
+    font-size: clamp(2.2rem, 5.2vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+  }
+
+  .linked {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: var(--text);
+  }
+
+  .linked:hover {
+    text-decoration: none;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px 6px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent-bright) 45%, transparent);
+    transition: transform 0.15s, background 0.15s;
+  }
+
+  .badge :global(.icon) {
+    transition: transform 0.15s;
+  }
+
+  .linked:hover .badge {
+    background: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  .linked:hover .badge :global(.icon) {
+    transform: translate(2px, -2px);
+  }
+</style>

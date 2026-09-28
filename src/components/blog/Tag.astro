@@ -1,0 +1,47 @@
+---
+import { tagColor } from '@/data/tags';
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+---
+
+<span class={`tag tag-${tagColor(tag)}`}>{tag}</span>
+
+<style is:global>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.6;
+    white-space: nowrap;
+    color: var(--tag-fg);
+    background: var(--tag-bg);
+  }
+
+  /* Notion palette */
+  .tag-gray { --tag-bg: #e3e2e0; --tag-fg: #32302c; }
+  .tag-brown { --tag-bg: #eee0da; --tag-fg: #442a1e; }
+  .tag-orange { --tag-bg: #fadec9; --tag-fg: #49290e; }
+  .tag-yellow { --tag-bg: #fdecc8; --tag-fg: #402c1b; }
+  .tag-green { --tag-bg: #dbeddb; --tag-fg: #1c3829; }
+  .tag-blue { --tag-bg: #d3e5ef; --tag-fg: #183347; }
+  .tag-purple { --tag-bg: #e8deee; --tag-fg: #412454; }
+  .tag-pink { --tag-bg: #f5e0e9; --tag-fg: #4c2337; }
+  .tag-red { --tag-bg: #ffe2dd; --tag-fg: #5d1715; }
+
+  [data-theme='dark'] .tag-gray { --tag-bg: #373737; --tag-fg: #e3e2e0; }
+  [data-theme='dark'] .tag-brown { --tag-bg: #4a3228; --tag-fg: #eee0da; }
+  [data-theme='dark'] .tag-orange { --tag-bg: #5c3b23; --tag-fg: #fadec9; }
+  [data-theme='dark'] .tag-yellow { --tag-bg: #564328; --tag-fg: #fdecc8; }
+  [data-theme='dark'] .tag-green { --tag-bg: #243d30; --tag-fg: #dbeddb; }
+  [data-theme='dark'] .tag-blue { --tag-bg: #143a4e; --tag-fg: #d3e5ef; }
+  [data-theme='dark'] .tag-purple { --tag-bg: #3c2d49; --tag-fg: #e8deee; }
+  [data-theme='dark'] .tag-pink { --tag-bg: #4e2c3c; --tag-fg: #f5e0e9; }
+  [data-theme='dark'] .tag-red { --tag-bg: #522e2a; --tag-fg: #ffe2dd; }
+</style>

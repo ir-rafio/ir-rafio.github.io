@@ -1,0 +1,53 @@
+---
+// Responsive image grid for blog posts. Images open full size in a new tab.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  images: { src: ImageMetadata; alt: string }[];
+  columns?: number;
+}
+
+const { images, columns = 3 } = Astro.props;
+---
+
+<div class="gallery" style={`--cols: ${columns}`}>
+  {
+    images.map((img) => (
+      <a href={img.src.src} target="_blank" rel="noopener">
+        <Image src={img.src} alt={img.alt} width={720} loading="lazy" />
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .gallery {
+    columns: 1;
+    column-gap: 14px;
+  }
+
+  @media (min-width: 560px) {
+    .gallery {
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .gallery {
+      columns: var(--cols);
+    }
+  }
+
+  .gallery a {
+    display: block;
+    break-inside: avoid;
+    margin-bottom: 14px;
+  }
+
+  .gallery :global(img) {
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+</style>

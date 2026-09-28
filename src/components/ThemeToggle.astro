@@ -1,0 +1,51 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+---
+
+<button class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+  <Icon name="lucide:moon" size={18} class="moon" />
+  <Icon name="lucide:sun" size={18} class="sun" />
+</button>
+
+<script>
+  document.querySelectorAll('.theme-toggle').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        /* storage unavailable; theme still applies for this page */
+      }
+    }),
+  );
+</script>
+
+<style>
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent-bright);
+  }
+
+  .theme-toggle :global(.sun),
+  :global([data-theme='dark']) .theme-toggle :global(.moon) {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .theme-toggle :global(.sun) {
+    display: block;
+  }
+</style>

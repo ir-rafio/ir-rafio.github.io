@@ -1,0 +1,62 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Logo from '@/components/ui/Logo.astro';
+import { activities } from '@/data/activities';
+---
+
+<section id="activities" class="section container">
+  <SectionHeading title="Activities" />
+  <div class="grid-2">
+    {
+      activities.map((a) => (
+        <article class="card act">
+          <div class="head">
+            <Logo logo={a.logo} icon={a.icon} alt="" size={48} />
+            <div>
+              <h3>{a.role}</h3>
+              <p class="org">
+                {a.org}
+                {a.period && <span> · {a.period}</span>}
+              </p>
+            </div>
+          </div>
+          <ul class="bullets">
+            {a.points.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .act {
+    padding: 24px;
+  }
+
+  .head {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    letter-spacing: -0.02em;
+  }
+
+  .org {
+    margin-top: 2px;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  .bullets {
+    font-size: 0.9rem;
+  }
+</style>

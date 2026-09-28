@@ -1,0 +1,140 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Tag from '@/components/blog/Tag.astro';
+import { rich } from '@/lib/text';
+import ExtLink from '@/components/ui/ExtLink.astro';
+import { research, researchInterests } from '@/data/research';
+---
+
+<section id="research" class="section container">
+  <SectionHeading title="Research" href="/research/" />
+
+  <div class="interests chips">
+    {researchInterests.map((r) => <span class="chip accent">{r}</span>)}
+  </div>
+
+  <div class="projects">
+    {
+      research.map((p) => (
+        <article class="card project">
+          <div class="icon-tile">
+            <Icon name="lucide:microscope" size={34} />
+          </div>
+          <div class="body">
+            <div class="top">
+              <span class="chip pink">{p.status}</span>
+              <span class="meta">
+                <span>
+                  <Icon name="lucide:calendar" /> {p.period}
+                </span>
+              </span>
+            </div>
+            <h3>{p.title}</h3>
+            <p class="authors" set:html={rich(p.authors.join(', '))} />
+            <p>{p.summary}</p>
+            <div class="chips">
+              {p.areas.map((a) => (
+                <Tag tag={a} />
+              ))}
+            </div>
+            {p.links.length > 0 && (
+              <div class="link-row">
+                {p.links.map((l) => (
+                  <ExtLink href={l.href} label={l.label} />
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .authors {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .authors :global(strong) {
+    color: var(--text);
+  }
+
+  .interests {
+    margin-top: 22px;
+  }
+
+  .projects {
+    display: grid;
+    gap: 20px;
+    margin-top: 28px;
+  }
+
+  .project {
+    display: grid;
+    gap: 24px;
+    padding: clamp(22px, 3.5vw, 32px);
+  }
+
+  .icon-tile {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    background: linear-gradient(145deg, var(--accent-soft), var(--pink-soft));
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+
+  h3 {
+    margin-top: 14px;
+    font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+    letter-spacing: -0.035em;
+  }
+
+  p {
+    margin-top: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .chips {
+    margin-top: 16px;
+  }
+
+  .link-row {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 759px) {
+    .icon-tile {
+      max-width: 72px;
+      border-radius: 16px;
+    }
+    .icon-tile :global(.icon) {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  @media (min-width: 760px) {
+    .project {
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 32px;
+    }
+  }
+</style>

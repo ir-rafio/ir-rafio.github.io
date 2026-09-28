@@ -1,0 +1,161 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Logo from '@/components/ui/Logo.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ExtLink from '@/components/ui/ExtLink.astro';
+import { experience } from '@/data/experience';
+import { rich } from '@/lib/text';
+import { formatDuration, formatPeriod, span } from '@/lib/dates';
+---
+
+<section id="experience" class="section container">
+  <SectionHeading title="Work Experience" />
+  <div class="stack">
+    {
+      experience.map((org) => (
+        <article class="card org">
+          <div class="side">
+            <Logo logo={org.logo} alt={`${org.name} logo`} size={68} />
+            <h3>{org.name}</h3>
+            <div class="side-meta">
+              {(() => {
+                const s = span(org.roles);
+                return (
+                  <span>
+                    <Icon name="lucide:calendar" /> {formatPeriod(s.start, s.end)} · {formatDuration(s.start, s.end)}
+                  </span>
+                );
+              })()}
+              <span>
+                <Icon name="lucide:map-pin" /> {org.location}
+              </span>
+            </div>
+            {org.links.length > 0 && (
+              <div class="link-row">
+                {org.links.map((l) => (
+                  <ExtLink {...l} />
+                ))}
+              </div>
+            )}
+          </div>
+          <div class="roles">
+            {org.roles.map((r) => (
+              <div class="role">
+                <div class="role-head">
+                  <h4>{r.title}</h4>
+                  {org.roles.length > 1 && (
+                    <span class="when">
+                      <Icon name="lucide:calendar" /> {formatPeriod(r.start, r.end)} · {formatDuration(r.start, r.end)}
+                    </span>
+                  )}
+                </div>
+                {r.summary && <p class="summary">{r.summary}</p>}
+                <ul class="bullets">
+                  {r.points.map((p) => (
+                    <li set:html={rich(p)} />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .stack {
+    display: grid;
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .org {
+    display: grid;
+    overflow: hidden;
+  }
+
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .side h3 {
+    margin-top: 8px;
+    font-size: 1.45rem;
+    letter-spacing: -0.03em;
+  }
+
+  .side-meta {
+    display: grid;
+    gap: 8px;
+    margin-top: 6px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .side-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .side .link-row {
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  .role {
+    padding: 28px clamp(20px, 3vw, 34px);
+  }
+
+  .role + .role {
+    border-top: 1px solid var(--border);
+  }
+
+  .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 6px 16px;
+    margin-bottom: 16px;
+  }
+
+  .summary {
+    margin: -4px 0 16px;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-soft);
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .when {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+
+  @media (min-width: 860px) {
+    .org {
+      grid-template-columns: 290px minmax(0, 1fr);
+    }
+    .side {
+      border-bottom: 0;
+      border-right: 1px solid var(--border);
+    }
+  }
+</style>

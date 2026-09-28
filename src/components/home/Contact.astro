@@ -1,0 +1,97 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { site } from '@/data/site';
+---
+
+<section id="contact" class="section container contact">
+  <div class="top">
+    <div>
+      <h2>Contact Me</h2>
+      <p>
+        I am looking for <strong>funded Masters or PhD</strong> opportunities. If you think I could be a good fit for your
+        group, or you want to talk about research, teaching or programming contests, please send me an email.
+      </p>
+    </div>
+    <a class="email" href={`mailto:${site.email}`}>
+      <span>{site.email}</span>
+      <span class="arrow"><Icon name="lucide:arrow-up-right" /></span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .contact {
+    margin-top: clamp(48px, 7vw, 88px);
+    border-top: 1px solid var(--border);
+  }
+
+  .top {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+  }
+
+  h2 {
+    font-size: clamp(2.2rem, 5.2vw, 3.6rem);
+    letter-spacing: -0.045em;
+  }
+
+  .top p {
+    margin-top: 14px;
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .top strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .email {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(1.05rem, 2.6vw, 1.9rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .email:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .arrow {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    font-size: 1.1rem;
+  }
+
+  .email:hover .arrow {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  @media (min-width: 900px) {
+    .top {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 48px;
+    }
+  }
+</style>

@@ -1,0 +1,166 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Tag from '@/components/blog/Tag.astro';
+import { research, researchInterests } from '@/data/research';
+import { rich } from '@/lib/text';
+---
+
+<BaseLayout title="Research" description="Research interests and projects of Irfanur Rahman Rafio.">
+  <div class="container page">
+    <SectionHeading
+      as="h1"
+      title="Research"
+      intro="My interests span computer vision, natural language processing and deep learning in general. Right now, we are studying adversarial attacks on image quality models."
+    />
+
+    <section class="interests">
+      <h2 class="eyebrow">Interests</h2>
+      <div class="chips">
+        {researchInterests.map((r) => <span class="chip accent">{r}</span>)}
+      </div>
+    </section>
+
+    <section class="projects">
+      <h2 class="sub">Projects</h2>
+      {
+        research.map((p) => (
+          <article class="card project">
+            <div class="top">
+              <span class="chip pink">{p.status}</span>
+              <span class="meta">
+                <span>
+                  <Icon name="lucide:calendar" /> {p.period}
+                </span>
+              </span>
+            </div>
+            <h3>{p.title}</h3>
+            <p class="authors" set:html={rich(p.authors.join(', '))} />
+            <div class="chips">
+              {p.areas.map((a) => (
+                <Tag tag={a} />
+              ))}
+            </div>
+
+            <div class="prose body">
+              {p.details.map((d) => (
+                <p>{d}</p>
+              ))}
+            </div>
+
+            <div class="findings">
+              <h4>
+                <Icon name="lucide:lightbulb" /> Findings so far
+              </h4>
+              <ul class="bullets">
+                {p.findings.map((f) => (
+                  <li set:html={rich(f)} />
+                ))}
+              </ul>
+            </div>
+
+            {p.links.length > 0 && (
+              <div class="buttons">
+                {p.links.map((l) => (
+                  <a class="btn" href={l.href} target="_blank" rel="noopener">
+                    <Icon name={l.icon} /> {l.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .authors {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .authors :global(strong) {
+    color: var(--text);
+  }
+
+  .page {
+    padding-top: clamp(40px, 6vw, 72px);
+  }
+
+  .interests {
+    margin-top: 32px;
+  }
+
+  .interests .chips {
+    margin-top: 10px;
+  }
+
+  .projects {
+    margin-top: clamp(40px, 6vw, 64px);
+  }
+
+  .sub {
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    letter-spacing: -0.04em;
+    margin-bottom: 20px;
+  }
+
+  .project {
+    padding: clamp(22px, 4vw, 40px);
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+  }
+
+  h3 {
+    margin-top: 16px;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    letter-spacing: -0.035em;
+    max-width: 30ch;
+  }
+
+  .project > .chips {
+    margin-top: 14px;
+  }
+
+  .body {
+    margin-top: 24px;
+    max-width: 75ch;
+  }
+
+  .findings {
+    margin-top: 28px;
+    padding: 20px 22px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    max-width: 80ch;
+  }
+
+  .findings h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+
+  .findings .bullets {
+    font-size: 0.98rem;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+</style>

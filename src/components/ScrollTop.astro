@@ -1,0 +1,49 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+---
+
+<button class="to-top" type="button" aria-label="Scroll to top" title="Scroll to top" hidden>
+  <Icon name="lucide:arrow-up" size={18} />
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.to-top');
+  if (btn) {
+    const update = () => (btn.hidden = window.scrollY < 600);
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    btn.addEventListener('click', () => window.scrollTo({ top: 0 }));
+  }
+</script>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--border-strong) 70%, transparent);
+    /* See-through so it never hides the content behind it */
+    background: color-mix(in srgb, var(--surface) 45%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: var(--text-soft);
+    opacity: 0.75;
+    cursor: pointer;
+    transition: opacity 0.15s, color 0.15s;
+  }
+
+  .to-top:hover {
+    opacity: 1;
+    color: var(--accent);
+  }
+
+  .to-top[hidden] {
+    display: none;
+  }
+</style>

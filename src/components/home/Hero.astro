@@ -1,0 +1,292 @@
+---
+// Three columns: photo with links, about text, timeline.
+import { Image } from 'astro:assets';
+import Icon from '@/components/ui/Icon.astro';
+import photo from '@/assets/photo.jpg';
+import { about } from '@/data/profile';
+import { profiles, site, socials } from '@/data/site';
+import { buildTimeline } from '@/lib/timeline';
+import { rich } from '@/lib/text';
+
+const timeline = buildTimeline();
+const links = [...socials, ...profiles];
+---
+
+<section class="hero container" aria-labelledby="hero-title">
+  <div class="photo-col">
+    <div class="photo-ring">
+      <Image
+        src={photo}
+        alt={`Portrait of ${site.name}`}
+        width={240}
+        height={240}
+        densities={[1, 2, 3]}
+        quality={90}
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+    <ul class="buttons">
+      {
+        links.map((s) => (
+          <li>
+            <a
+              class="btn"
+              href={s.href}
+              {...(s.href.startsWith('mailto:') ? { title: site.email } : { target: '_blank', rel: 'noopener' })}
+            >
+              <Icon name={s.icon} />
+              {s.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="cv">
+        <a class="btn primary" href={site.cv} target="_blank" rel="noopener">
+          <Icon name="lucide:file-down" />
+          Download CV
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="about">
+    <h1 id="hero-title">{about.greeting}</h1>
+    {about.paragraphs.map((p) => <p set:html={rich(p)} />)}
+  </div>
+
+  <aside class="timeline" aria-labelledby="timeline-title">
+    <h2 id="timeline-title"><Icon name="lucide:history" /> Timeline</h2>
+    <ol class="months">
+      {
+        timeline.map((g) => (
+          <li class="month">
+            <span class="date">{g.date}</span>
+            <ul class="items">
+              {g.items.map((t) => (
+                <li>{t.href ? <a href={t.href}>{t.text}</a> : t.text}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+  </aside>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 32px;
+    padding-top: clamp(28px, 4vw, 44px);
+  }
+
+  .photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .photo-ring {
+    position: relative;
+    width: min(220px, 60vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(from 200deg, var(--accent-bright), var(--pink), var(--accent-bright));
+    box-shadow: 0 20px 50px rgba(22, 32, 27, 0.14);
+  }
+
+  .photo-ring :global(img) {
+    position: absolute;
+    inset: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid var(--bg);
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    list-style: none;
+    max-width: 420px;
+  }
+
+  .buttons .btn {
+    padding: 7px 13px;
+    font-size: 0.84rem;
+  }
+
+  .buttons :global(.icon) {
+    color: var(--accent);
+  }
+
+  .buttons .primary :global(.icon) {
+    color: inherit;
+  }
+
+  .about h1 {
+    font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+
+  .about p {
+    font-size: clamp(1rem, 1.2vw, 1.08rem);
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .about p + p {
+    margin-top: 12px;
+  }
+
+  .about :global(strong) {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .timeline {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 0;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .timeline h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline h2 :global(.icon) {
+    color: var(--accent);
+  }
+
+  .months {
+    list-style: none;
+    margin: 0;
+    padding: 14px 4px 24px 0;
+    max-height: 420px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    mask-image: linear-gradient(to bottom, #000 90%, transparent);
+  }
+
+  .month {
+    position: relative;
+    padding: 0 0 16px 20px;
+    border-left: 2px solid var(--border);
+    margin-left: 5px;
+  }
+
+  .month:last-child {
+    border-left-color: transparent;
+  }
+
+  .month::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent-bright);
+  }
+
+  .month:first-child::before {
+    background: var(--pink);
+    border-color: var(--pink);
+  }
+
+  .date {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Several events in one month: separate them with thin rules */
+  .items {
+    list-style: none;
+    margin-top: 4px;
+  }
+
+  .items li {
+    padding: 6px 0;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--text-soft);
+  }
+
+  .items li + li {
+    border-top: 1px dashed var(--border-strong);
+  }
+
+  .items a {
+    color: inherit;
+  }
+
+  .items a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (min-width: 760px) {
+    .hero {
+      grid-template-columns: 220px minmax(0, 1fr);
+      column-gap: 40px;
+    }
+    .photo-col {
+      align-items: stretch;
+    }
+    .photo-ring {
+      width: 220px;
+    }
+    .buttons {
+      justify-content: flex-start;
+    }
+    .timeline {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1140px) {
+    .hero {
+      grid-template-columns: 230px minmax(0, 1fr) 310px;
+      column-gap: 44px;
+    }
+    .photo-ring {
+      width: 230px;
+    }
+    .timeline {
+      grid-column: auto;
+      /* Match the height of the other columns on desktop */
+      align-self: stretch;
+      max-height: calc(100vh - 150px);
+      min-height: 420px;
+    }
+    .months {
+      max-height: none;
+      flex: 1;
+      min-height: 0;
+    }
+  }
+</style>

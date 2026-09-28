@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import BlogRow from '@/components/blog/BlogRow.astro';
+import { getBlogs } from '@/lib/blog';
+
+const blogs = await getBlogs();
+---
+
+<BaseLayout title="Personal Blogs" description="Personal blogs by Irfanur Rahman Rafio.">
+  <section class="section container">
+    <SectionHeading as="h1" title="Personal Blogs" />
+    <div class="list">
+      {blogs.map((b) => <BlogRow blog={b} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .list {
+    margin-top: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+</style>

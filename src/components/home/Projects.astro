@@ -1,0 +1,249 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import ExtLink from '@/components/ui/ExtLink.astro';
+import { projects as all, projectsShown } from '@/data/projects';
+
+const [top, ...projects] = all;
+---
+
+<section id="projects" class="section container">
+  <SectionHeading title="Projects" intro="Things I have built, mostly for teaching and programming contests." />
+
+  <article class="card top">
+    <div class="top-head">
+      <span class="logo-box icon-only big">
+        <Icon name={top.icon} size={34} />
+      </span>
+      <div>
+        <div class="kicker">
+          <span class="eyebrow">{top.category}</span>
+          {top.badge && <span class="chip pink">{top.badge}</span>}
+        </div>
+        <h3>{top.title}</h3>
+        <span class="date">
+          <Icon name="lucide:calendar" /> {top.date}
+        </span>
+      </div>
+    </div>
+    <div class="desc top-desc">
+      {top.description.map((d) => <p>{d}</p>)}
+    </div>
+    <div class="stack">
+      {top.stack.map((s) => <span>{s}</span>)}
+    </div>
+    <div class="link-row top-links">
+      {top.links.map((l) => <ExtLink {...l} />)}
+    </div>
+  </article>
+
+  <div class="grid-3" id="project-grid">
+    {
+      projects.map((p, i) => (
+        <article class="card project" data-extra={i >= projectsShown ? '' : undefined}>
+          <div class="head">
+            <span class="logo-box icon-only">
+              <Icon name={p.icon} size={22} />
+            </span>
+            <div>
+              <div class="kicker">
+                <span class="eyebrow">{p.category}</span>
+                {p.badge && <span class="chip pink">{p.badge}</span>}
+              </div>
+              <h3>{p.title}</h3>
+            </div>
+          </div>
+          <div class="desc">
+            {p.description.map((d) => (
+              <p>{d}</p>
+            ))}
+          </div>
+          <div class="stack">
+            {p.stack.map((s) => (
+              <span>{s}</span>
+            ))}
+          </div>
+          <div class="foot">
+            <span class="date">
+              <Icon name="lucide:calendar" /> {p.date}
+            </span>
+            {p.links.length > 0 && (
+              <div class="link-row">
+                {p.links.map((l) => (
+                  <ExtLink {...l} />
+                ))}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  {
+    projects.length > projectsShown && (
+      <div class="toggle-row">
+        <button class="btn" id="project-toggle" type="button" aria-controls="project-grid" aria-expanded="false">
+          <span class="label">View more</span>
+          <span class="count">({projects.length - projectsShown})</span>
+          <Icon name="lucide:chevron-down" class="chev" />
+        </button>
+      </div>
+    )
+  }
+</section>
+
+<script>
+  const btn = document.getElementById('project-toggle');
+  const grid = document.getElementById('project-grid');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    grid?.classList.toggle('expanded', open);
+    btn.querySelector('.label')!.textContent = open ? 'View less' : 'View more';
+    if (!open) document.getElementById('projects')?.scrollIntoView();
+  });
+</script>
+
+<style>
+  .top {
+    margin-top: 32px;
+    padding: clamp(22px, 4vw, 36px);
+    background:
+      radial-gradient(90% 80% at 100% 0%, var(--accent-soft), transparent 60%),
+      var(--surface);
+  }
+
+  .top-head {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .logo-box.big {
+    width: 68px;
+    height: 68px;
+  }
+
+  .top h3 {
+    margin: 6px 0 8px;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .top-desc {
+    margin-top: 20px;
+    max-width: 90ch;
+    font-size: 0.97rem;
+  }
+
+  .top .stack {
+    margin-top: 16px;
+  }
+
+  .top-links {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  #project-grid:not(.expanded) .project[data-extra] {
+    display: none;
+  }
+
+  .head {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .head .logo-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  .kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+  }
+
+  .kicker .chip {
+    font-size: 0.68rem;
+    padding: 1px 8px;
+  }
+
+  h3 {
+    margin-top: 4px;
+    font-size: 1.12rem;
+    letter-spacing: -0.02em;
+  }
+
+  .desc {
+    display: grid;
+    gap: 10px;
+    font-size: 0.89rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 0;
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+
+  .stack span:not(:last-child)::after {
+    content: '·';
+    margin-inline: 7px;
+    opacity: 0.6;
+  }
+
+  .foot {
+    display: grid;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .toggle-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .count {
+    color: var(--muted);
+  }
+
+  .btn :global(.chev) {
+    transition: transform 0.2s;
+  }
+
+  .btn[aria-expanded='true'] :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .btn[aria-expanded='true'] .count {
+    display: none;
+  }
+</style>

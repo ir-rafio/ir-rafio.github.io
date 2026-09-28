@@ -1,0 +1,84 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { courseGroups, homeCourses } from '@/data/teaching';
+import { rich } from '@/lib/text';
+
+const all = courseGroups.flatMap((g) => g.courses.map((c) => ({ ...c, institution: g.short })));
+const featured = homeCourses.map((id) => all.find((c) => c.id === id)!).filter(Boolean);
+
+const kindIcon = { Theory: 'lucide:book-open', Lab: 'lucide:terminal', Training: 'lucide:trophy', School: 'lucide:calculator' };
+---
+
+<section id="teaching" class="section container">
+  <SectionHeading title="Teaching" href="/teaching/" />
+  <div class="grid-3">
+    {
+      featured.map((c) => (
+        <article class="card course">
+          <div class="head">
+            <span class="logo-box icon-only">
+              <Icon name={kindIcon[c.kind]} size={22} />
+            </span>
+            <div>
+              <span class="eyebrow">
+                {c.institution} · {c.kind}
+              </span>
+              <h3>{c.code ? `${c.code}: ${c.title}` : c.title}</h3>
+            </div>
+          </div>
+          <ul class="bullets">
+            {c.points.slice(0, 3).map((p) => (
+              <li set:html={rich(p)} />
+            ))}
+          </ul>
+          <div class="foot">
+            <div class="chips">
+              {c.terms.map((t) => (
+                <span class="chip">{t}</span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .course {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 24px;
+  }
+
+  .head {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .head .logo-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  h3 {
+    margin-top: 2px;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .bullets {
+    font-size: 0.88rem;
+    gap: 8px;
+  }
+
+  .foot {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+</style>
