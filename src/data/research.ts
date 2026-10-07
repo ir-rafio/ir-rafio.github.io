@@ -57,12 +57,6 @@ export const research: ResearchProject[] = [
       'Within the same basis, the models can be steered independently. One perturbation realized **all 27** raise, lower and hold combinations across the three models, while the held models drifted by less than 0.01 score units.',
       'The vulnerability is concentrated in a small shared subspace, while each model responds to its own directions inside it. The shared-basis attack works as a compact check for NR-IQA models before they are used as optimization objectives.',
     ],
-    links: [
-      {
-        label: 'OpenReview',
-        href: 'https://openreview.net/forum?id=t1r38gU9PJ',
-        icon: 'lucide:file-text',
-      },
-    ],
+    links: [],
   },
 ];
