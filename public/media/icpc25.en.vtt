@@ -1,0 +1,213 @@
+WEBVTT
+
+00:00:00.010 --> 00:00:01.490
+Assalamu alaikum, everyone.
+
+00:00:01.990 --> 00:00:07.252
+First, I want to thank the people under whose
+leadership we worked on today's problem set:
+
+00:00:07.252 --> 00:00:08.830
+Dr. Mohammad Kaykobad sir,
+
+00:00:08.830 --> 00:00:14.900
+Distinguished Professor at BRAC University and Chief
+Judge; Shahriar Manzoor sir,
+
+00:00:14.900 --> 00:00:18.970
+Associate Professor at Southeast University and
+Judging Director;
+
+00:00:19.240 --> 00:00:21.140
+and Mohammad Ashraful Islam,
+
+00:00:21.290 --> 00:00:25.460
+Assistant Professor at Jahangirnagar University and
+Judging Coordinator.
+
+00:00:25.990 --> 00:00:29.880
+For the ICPC 2025 preliminary and onsite contests,
+
+00:00:30.090 --> 00:00:35.610
+problem review was done by me, Raihat Zaman Neloy,
+Software Engineer at Google Ireland;
+
+00:00:35.910 --> 00:00:39.990
+Muhammad Nafis Sadique, Senior Software Engineer at
+Google Ireland;
+
+00:00:40.200 --> 00:00:43.670
+and Pritom Kundu, Stony Brook University.
+
+00:00:44.840 --> 00:00:50.530
+Today's problem set had ten problems, and seven
+distinct problems were solved.
+
+00:00:50.530 --> 00:00:55.300
+At least one problem was solved by 288 teams
+
+00:00:55.300 --> 00:00:59.030
+out of 313. So, a big round of applause for all of
+them.
+
+00:01:01.740 --> 00:01:07.000
+Problem A, Mission Hexa, was set by Irfanur Rahman
+Rafio.
+
+00:01:07.210 --> 00:01:10.170
+The testers were Rumman Mahmud and Nafis Sadique.
+
+00:01:10.510 --> 00:01:13.330
+Tariq Hasan Rizu was the alternate writer.
+
+00:01:13.420 --> 00:01:17.530
+Its categories were geometry, number theory and
+combinatorics.
+
+00:01:17.800 --> 00:01:22.497
+Problem B, Boulevard of Broken Cars. The setter was
+Pritom Kundu,
+
+00:01:22.497 --> 00:01:25.460
+and the tester was Irfanur Rahman Rafio,
+
+00:01:25.510 --> 00:01:27.830
+and the alternate writer was Nafis Sadique.
+
+00:01:28.040 --> 00:01:31.410
+This problem's categories were data structures and
+implementation.
+
+00:01:32.650 --> 00:01:34.490
+Problem C, Gas Reservoir.
+
+00:01:34.730 --> 00:01:37.140
+The setter was Mohammad Ashraful Islam.
+
+00:01:37.420 --> 00:01:39.700
+The tester was Raihat Zaman Neloy.
+
+00:01:39.850 --> 00:01:44.632
+The alternate writers were Sharif Minhazul Islam and
+Tariq Hasan Rizu.
+
+00:01:44.632 --> 00:01:47.160
+Categories: graph theory and ad hoc.
+
+00:01:47.850 --> 00:01:53.940
+Problem D, Save the Wonderland. The setter was me,
+Raihat Zaman Neloy.
+
+00:01:54.090 --> 00:01:57.650
+The tester was Mukit Hasan, Software Engineer at
+Oracle.
+
+00:01:58.090 --> 00:02:03.220
+The alternate writer was Pritom Kundu. Categories:
+graph theory, greedy and binary search.
+
+00:02:03.850 --> 00:02:08.760
+Problem E, Love Marriage. The setter was Irfanur
+Rahman Rafio.
+
+00:02:08.940 --> 00:02:12.730
+The tester was Rafid Bin Mostofa, and the alternate
+writer was
+
+00:02:12.810 --> 00:02:17.170
+Rafid Bin Mostofa. Categories: probability, range
+query and greedy.
+
+00:02:18.630 --> 00:02:20.630
+Problem F, Morning Walk.
+
+00:02:20.780 --> 00:02:22.970
+The setter was Monirul Hasan sir.
+
+00:02:23.150 --> 00:02:26.119
+Tester: Irfanur Rahman Rafio. Alternate writer:
+
+00:02:26.119 --> 00:02:29.910
+Raihat Zaman Neloy. Categories: geometry and basic
+physics.
+
+00:02:30.760 --> 00:02:32.570
+Problem G, Nonogram.
+
+00:02:32.710 --> 00:02:34.840
+The setter was Pritom Kundu.
+
+00:02:34.920 --> 00:02:39.000
+The testers were Rafid Bin Mostofa and Irfanur
+Rahman Rafio.
+
+00:02:39.270 --> 00:02:42.230
+Alternate writer: Nafis Sadique. Category: ad hoc.
+
+00:02:42.440 --> 00:02:45.757
+Some teams got Wrong Answer on this problem because
+of capitalization.
+
+00:02:45.757 --> 00:02:48.600
+Otherwise, their first submission would have been
+accepted.
+
+00:02:49.800 --> 00:02:54.200
+Problem H, Optimal Balancing Strategy. The setter
+was
+
+00:02:54.410 --> 00:02:58.230
+Tariq Hasan Rizu. The testers were Shahjalal Shohag
+
+00:02:58.440 --> 00:02:59.990
+and Irfanur Rahman Rafio.
+
+00:03:00.140 --> 00:03:04.262
+The alternate writers were Muhiminul Islam Osim and
+Rafid Bin Mostofa.
+
+00:03:04.262 --> 00:03:07.030
+Categories: sorting, number theory and greedy.
+
+00:03:07.430 --> 00:03:12.530
+Problem I, Two Strings Attached. The setter was
+Shahjalal Shohag.
+
+00:03:12.810 --> 00:03:16.104
+The testers were Rafid Bin Mostofa and Irfanur
+Rahman Rafio,
+
+00:03:16.104 --> 00:03:20.660
+and the alternate writer was Nafis Sadique.
+Category: data structures. And today's
+
+00:03:20.660 --> 00:03:22.130
+C-Style String Length.
+
+00:03:22.280 --> 00:03:25.400
+The setter was our respected Shahriar Manzoor sir.
+
+00:03:25.580 --> 00:03:27.528
+The tester was Mahmodol Hassan Monna,
+
+00:03:27.528 --> 00:03:31.160
+and the alternate writer was Irfanur Rahman Rafio.
+Category: ad hoc.
+
+00:03:31.690 --> 00:03:37.258
+We also thank the problem setters who helped with
+our preliminary contest:
+
+00:03:37.258 --> 00:03:41.170
+Hasinur Rahman, Software Engineer at Google Taiwan;
+
+00:03:41.390 --> 00:03:44.600
+Arnob Sarker, Software Engineer at Kite Games
+Studio;
+
+00:03:44.710 --> 00:03:47.290
+and Yeamin Kaiser, Software Engineer at Amazon.
+
+00:03:47.530 --> 00:03:54.580
+Imran Bin Azad sir from BRAC University also helped
+us in every way as our technical coordinator.

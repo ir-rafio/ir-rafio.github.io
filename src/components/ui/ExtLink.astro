@@ -1,0 +1,17 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { isExternal } from '@/lib/text';
+
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+const external = isExternal(href);
+---
+
+<a class="ext-link" href={href} {...external && !href.startsWith('mailto:') ? { target: '_blank', rel: 'noopener' } : {}}>
+  {label}
+  <Icon name={external ? 'lucide:arrow-up-right' : 'lucide:arrow-right'} size="0.9em" />
+</a>

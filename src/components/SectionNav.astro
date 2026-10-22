@@ -1,0 +1,260 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+---
+
+<nav class="section-nav" aria-label="On this page" hidden>
+  <div class="bar container">
+    <div class="bar-inner">
+      <button type="button" class="bar-btn" aria-expanded="false" aria-controls="section-list">
+        <Icon name="lucide:list" />
+        <span class="current"></span>
+        <Icon name="lucide:chevron-down" class="chev" />
+      </button>
+      <ol id="section-list" class="list" hidden></ol>
+      <span class="progress" aria-hidden="true"></span>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const MIN_SECTIONS = 3;
+  const SHOW_AFTER = 160;
+
+  const nav = document.querySelector<HTMLElement>('.section-nav');
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-section][id]')];
+
+  if (nav && sections.length >= MIN_SECTIONS) {
+    const root = document.documentElement;
+    const list = nav.querySelector<HTMLOListElement>('.list')!;
+    const progress = nav.querySelector<HTMLElement>('.progress')!;
+    const current = nav.querySelector<HTMLElement>('.current')!;
+    const btn = nav.querySelector<HTMLButtonElement>('.bar-btn')!;
+
+    const labels = sections.map((s) => s.dataset.section!);
+    const links = sections.map((s, i) => {
+      const item = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${s.id}`;
+      a.textContent = labels[i];
+      item.append(a);
+      list.append(item);
+      return a;
+    });
+
+    nav.hidden = false;
+    root.dataset.sections = '';
+
+    let tops: number[] = [];
+    let active = -2;
+
+    const update = () => {
+      const docH = root.scrollHeight;
+      const view = window.innerHeight;
+      const y = window.scrollY;
+      const max = Math.max(docH - view, 1);
+
+      progress.style.transform = `scaleX(${Math.min(y / max, 1)})`;
+
+      const line = y + view / 3;
+      let now = -1;
+      tops.forEach((t, i) => {
+        if (t <= line) now = i;
+      });
+      if (y >= max - 2) now = sections.length - 1;
+      nav.classList.toggle('started', now >= 0 && y > SHOW_AFTER);
+      if (now === active) return;
+      active = now;
+
+      links.forEach((a, i) => {
+        if (i === now) a.setAttribute('aria-current', 'location');
+        else a.removeAttribute('aria-current');
+      });
+      current.textContent = now >= 0 ? labels[now] : '';
+    };
+
+    const measure = () => {
+      tops = sections.map((s) => s.getBoundingClientRect().top + window.scrollY);
+      active = -2;
+      update();
+    };
+
+    let queued = false;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          update();
+        });
+      },
+      { passive: true },
+    );
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    new ResizeObserver(measure).observe(document.body);
+    measure();
+
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      list.hidden = !open;
+    };
+    btn.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+    list.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('a')) setOpen(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!list.hidden && !(e.target as Element).closest('.bar-inner')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !list.hidden) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+  }
+</script>
+
+<style>
+  .section-nav[hidden] {
+    display: none;
+  }
+
+  .bar {
+    position: fixed;
+    top: calc(var(--nav-h) + 8px);
+    left: 0;
+    right: 0;
+    z-index: 45;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 0.15s,
+      transform 0.15s,
+      visibility 0s 0.15s;
+  }
+
+  .started .bar {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+  }
+
+  .bar-inner {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .bar-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 42px;
+    padding: 0 16px;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .bar-btn :global(.icon) {
+    color: var(--accent);
+  }
+
+  .bar-btn :global(.chev) {
+    margin-left: auto;
+    color: var(--muted);
+    transition: transform 0.15s;
+  }
+
+  .bar-btn[aria-expanded='true'] :global(.chev) {
+    transform: rotate(180deg);
+  }
+
+  .progress {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-bright);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .list {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .list[hidden] {
+    display: none;
+  }
+
+  .list :global(a) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .list :global(a)::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--pink);
+  }
+
+  .list :global(a:hover) {
+    background: var(--surface-2);
+    text-decoration: none;
+  }
+
+  .list :global(a[aria-current]) {
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  .list :global(a[aria-current])::before {
+    background: var(--accent-bright);
+  }
+
+  @media (min-width: 640px) {
+    .list {
+      right: auto;
+      width: 300px;
+    }
+  }
+</style>

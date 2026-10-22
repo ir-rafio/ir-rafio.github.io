@@ -1,0 +1,86 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { site, socials, updatedOn } from '@/data/site';
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <p class="left">
+      <span class="brand">{site.nickname}</span>
+      <span>© {new Date().getFullYear()} {site.fullName}</span>
+    </p>
+    <ul class="socials">
+      {
+        socials.map((s) => (
+          <li>
+            <a href={s.href} aria-label={s.label} title={s.label}>
+              <Icon name={s.icon} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="updated">
+      <Icon name="lucide:calendar-clock" />
+      Last updated on <time>{updatedOn}</time>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: clamp(64px, 9vw, 110px);
+    border-top: 1px solid var(--border);
+    padding-block: 28px 36px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px 24px;
+  }
+
+  .left {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .brand {
+    font-family: var(--font-script);
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+
+  .socials {
+    display: flex;
+    gap: 6px;
+    list-style: none;
+  }
+
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .socials a:hover {
+    color: var(--accent);
+    border-color: var(--accent-bright);
+  }
+
+  .updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+</style>

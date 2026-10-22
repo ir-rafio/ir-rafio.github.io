@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  images: { src: ImageMetadata; alt: string; caption?: string }[];
+  columns?: number;
+  captions?: boolean;
+  small?: boolean;
+}
+
+const { images, columns = 3, captions = false, small = false } = Astro.props;
+---
+
+<div class:list={['gallery', { small }]} style={`--cols: ${columns}`}>
+  {
+    images.map((img) =>
+      captions || img.caption ? (
+        <figure class="card">
+          <a href={img.src.src} target="_blank" rel="noopener">
+            <Image src={img.src} alt={img.alt} width={720} loading="lazy" />
+          </a>
+          <figcaption>{img.caption ?? img.alt}</figcaption>
+        </figure>
+      ) : (
+        <a href={img.src.src} target="_blank" rel="noopener">
+          <Image src={img.src} alt={img.alt} width={720} loading="lazy" />
+        </a>
+      ),
+    )
+  }
+</div>
+
+<style>
+  .gallery {
+    columns: 1;
+    column-gap: 14px;
+  }
+
+  @media (min-width: 560px) {
+    .gallery {
+      columns: 2;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .gallery {
+      columns: var(--cols);
+    }
+  }
+
+  .gallery > a,
+  .gallery figure {
+    display: block;
+    break-inside: avoid;
+    margin: 0 0 14px;
+  }
+
+  .gallery figure {
+    overflow: hidden;
+  }
+
+  .gallery figure a {
+    display: block;
+  }
+
+  .gallery :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+  }
+
+  .gallery.small {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    max-width: calc(3 * 200px + 2 * 14px);
+    gap: 14px;
+  }
+
+  .gallery.small > a,
+  .gallery.small figure {
+    margin: 0;
+  }
+
+  .gallery figcaption {
+    padding: 10px 14px 12px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+</style>

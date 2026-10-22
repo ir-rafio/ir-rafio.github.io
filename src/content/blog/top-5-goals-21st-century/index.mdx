@@ -1,0 +1,47 @@
+---
+title: My Top 5 Favorite Goals from the 21st Century
+date: 2022-08-08
+tags: [Football]
+summary: My 5 favorite goals from the 21st century that I watch every once in a while.
+---
+
+import Gallery from '@/components/blog/Gallery.astro';
+import zlatan from './1-zlatan-bicycle-kick.jpg';
+import flyingDutchman from './2-flying-dutchman.jpg';
+import ankaraMessi from './3-ankara-messi.jpg';
+import kaka from './4-kaka-solo-goal.jpg';
+import ronaldinho from './5-ronaldinho-free-kick.jpg';
+
+<Gallery
+  small
+  captions
+  images={[
+    {
+      src: ronaldinho,
+      alt: 'Ronaldinho striking his free kick vs. England',
+      caption: "5. Ronaldinho's Free Kick vs. England",
+    },
+    {
+      src: kaka,
+      alt: 'Kaka celebrating vs. Manchester United at Old Trafford',
+      caption: "4. Kaka's Solo Goal vs. Man United",
+    },
+    {
+      src: ankaraMessi,
+      alt: 'Lionel Messi running with the ball seconds before scoring vs. Getafe',
+      caption: '3. Ankara Messi',
+    },
+    {
+      src: flyingDutchman,
+      alt: 'Robin van Persie in the air for his diving header vs. Spain',
+      caption: '2. The Flying Dutchman',
+    },
+    {
+      src: zlatan,
+      alt: 'Zlatan Ibrahimović in the air for his bicycle kick vs. England',
+      caption: "1. Zlatan's 30-Yard Bicycle Kick",
+    },
+  ]}
+/>
+
+<small>Photo of Ankara Messi by Darz Mol, [CC BY-SA 2.5 ES](https://creativecommons.org/licenses/by-sa/2.5/es/deed.en), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Lionel_Messi_goal_19abr2007.jpg).</small>

@@ -1,0 +1,96 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import Tag from '@/components/blog/Tag.astro';
+import { excerpt, formatDate, type Blog } from '@/lib/blog';
+
+interface Props {
+  blog: Blog;
+}
+
+const { blog } = Astro.props;
+const { title, date, tags } = blog.data;
+---
+
+<a
+  class="row"
+  href={`/blog/${blog.id}/`}
+>
+  <div class="body">
+    <div class="top">
+      <time datetime={date.toISOString()}>{formatDate(date, 'short')}</time>
+      <span class="tags">{tags.map((t) => <Tag tag={t} />)}</span>
+    </div>
+    <h3>{title}</h3>
+    <p>{excerpt(blog, 180)}</p>
+  </div>
+  <span class="go" aria-hidden="true"><Icon name="lucide:arrow-up-right" /></span>
+</a>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border);
+    color: inherit;
+  }
+
+  .row:hover {
+    text-decoration: none;
+  }
+
+  .row:hover h3 {
+    color: var(--accent);
+  }
+
+  .body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  h3 {
+    margin-top: 8px;
+    font-size: 1.25rem;
+    transition: color 0.15s;
+  }
+
+  p {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .go {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+
+  .row:hover .go {
+    color: var(--accent-contrast);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+</style>
