@@ -11,6 +11,11 @@ export type TimelineEntry = { date: string; text: string; href?: string };
 
 export const timeline: TimelineEntry[] = [
   {
+    date: 'Nov 2026',
+    text: 'Posted a video tutorial of Perfect Couple, my problem from the ICPC Asia Dhaka Regional Online Preliminary 2026, on YouTube.',
+    href: 'https://youtu.be/UtgH0MY6I34',
+  },
+  {
     date: 'Oct 2026',
     text: 'Launched Biscuit Rating, a public rating website for contestants and institutions in onsite programming contests in Bangladesh.',
     href: 'https://ir-rafio.github.io/Biscuit-Rating/',

@@ -282,6 +282,35 @@ export type JudgedContest = {
 
 export const judged: JudgedContest[] = [
   {
+    name: 'ICPC Asia Dhaka Regional Online Preliminary 2026',
+    date: 'Oct 2026',
+    host: 'International University of Business Agriculture and Technology',
+    roles: ['Setter', 'Tester'],
+    logo: 'icpc',
+    note: 'Worked on 4 of the 8 problems as an author or tester. Later recorded a video tutorial of my problem.',
+    authored: [
+      {
+        id: 'E',
+        title: 'Perfect Couple',
+        topics: ['Number Theory', 'Range Query', 'Brute Force'],
+        note: 'Co-authored with Abdullah Abrar',
+      },
+    ],
+    tested: ['A. Whirlpool', 'D. Stuck in the Middle', 'F. Yet Another Stone Problem'],
+    links: [
+      {
+        label: 'Problems',
+        href: 'https://github.com/baps-problemset-archive/contests-archive/blob/main/icpc-2026-preli/statements.pdf',
+      },
+      {
+        label: 'Editorial',
+        href: 'https://github.com/baps-problemset-archive/contests-archive/blob/main/icpc-2026-preli/editorials.pdf',
+      },
+      { label: 'Replay', href: 'https://codeforces.com/gym/106810' },
+      { label: 'Video tutorial of E', href: 'https://youtu.be/UtgH0MY6I34' },
+    ],
+  },
+  {
     name: 'IUT 12th ICT Fest Inter University Programming Contest 2026',
     date: 'Jul 2026',
     host: 'Islamic University of Technology',
@@ -709,6 +738,7 @@ export function problemTopics(): { topic: string; count: number }[] {
 export const authoredCount = judged.reduce((n, c) => n + c.authored.length, 0);
 
 export const homeJudged = [
+  'ICPC Asia Dhaka Regional Online Preliminary 2026',
   'ICPC Asia Dhaka Regional Contest 2025',
   'ICPC Asia Dhaka Regional Online Preliminary 2025',
   'IUT 12th ICT Fest Inter University Programming Contest 2026',
